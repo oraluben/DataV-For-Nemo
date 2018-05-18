@@ -8,4 +8,6 @@ config = {
         'charset': 'utf8'
     },
     'project_id': 12767,
+    'interval': 10,
+    'table_name': 'strawberry',
 }

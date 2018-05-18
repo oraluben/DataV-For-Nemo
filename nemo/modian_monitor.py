@@ -23,8 +23,8 @@ def newOrder():
     newOrders = []
     orderDict = getOrders(pro_id, 1)
     for data in orderDict['data']:
-        paytimeStamp = Time_format_conversion(data['pay_time'])
-        if paytimeStamp >= stampTime - 10 and paytimeStamp < stampTime:
+        paytimeStamp = time_format_conversion(data['pay_time'])
+        if paytimeStamp >= stampTime - config['interval'] and paytimeStamp < stampTime:
             newOrders.append(data)
     if newOrders:
         print('有新订单产生！\n')
@@ -37,7 +37,7 @@ def newOrder():
             print('正在写入数据')
             db = connect_database()
             cursor = db.cursor()
-            cursor.execute("INSERT INTO strawberry VALUES (%s,%s,%s,%s,%s)",
+            cursor.execute(f"INSERT INTO {config['table_name']} VALUES (%s,%s,%s,%s,%s)",
                            (pro_id, user_id, nickname, backer_money, pay_time))
             db.commit()
             print('数据存储完成\n')
@@ -47,8 +47,7 @@ def newOrder():
 
 
 if __name__ == '__main__':
-    from nemo.config import config
     pro_id = config['project_id']
     sched = BlockingScheduler()
-    sched.add_job(newOrder, 'interval', seconds=10)
+    sched.add_job(newOrder, 'interval', seconds=config['interval'])
     sched.start()

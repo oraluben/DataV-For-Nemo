@@ -3,6 +3,7 @@ import datetime
 
 import requests
 
+from nemo.config import config
 from nemo.helper import *
 
 payTimeList = []
@@ -11,7 +12,7 @@ payTimeList = []
 def querry_database():
     db = connect_database()
     cursor = db.cursor()
-    cursor.execute("SELECT SUM(backer_money) FROM strawberry")
+    cursor.execute(f"SELECT SUM(backer_money) FROM {config['table_name']}")
     results = cursor.fetchall()
     for row in results:
         dbMoney = row[0]
@@ -21,7 +22,7 @@ def querry_database():
 def querry_payTime():
     db = connect_database()
     cursor = db.cursor()
-    cursor.execute("SELECT pay_time FROM strawberry WHERE DATE_FORMAT(pay_time,'%m-%d') = DATE_FORMAT(now(),'%m-%d')")
+    cursor.execute(f"SELECT pay_time FROM {config['table_name']} WHERE DATE_FORMAT(pay_time,'%m-%d') = DATE_FORMAT(now(),'%m-%d')")
     results = cursor.fetchall()
     for row in results:
         payTime = str(row[0])
@@ -64,7 +65,7 @@ def getOrders():
                     pay_time = data['pay_time']
                     db = connect_database()
                     cursor = db.cursor()
-                    cursor.execute("INSERT INTO strawberry VALUES (%s,%s,%s,%s,%s)",
+                    cursor.execute(f"INSERT INTO {config['table_name']} VALUES (%s,%s,%s,%s,%s)",
                                    (pro_id, user_id, nickname, backer_money, pay_time))
                     db.commit()
                     msg = str(time.strftime("%a %b %d %H:%M:%S", time.localtime())) + '  ' + \
