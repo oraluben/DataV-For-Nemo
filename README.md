@@ -99,7 +99,7 @@
    ```
    select nickname,sum(backer_money) from strawberry
    where DATE_FORMAT(pay_time,'%m-%d') = DATE_FORMAT(now(),'%m-%d')
-   group by nickname
+   group by user_id
    order by sum(backer_money) desc 
    limit 0,1;
    ```
@@ -174,6 +174,7 @@
 ##  更新记录
 
 
+**2018.05.25更新**：优化了部分SQL语句，感谢[啤酒瓶几](https://weibo.com/u/5818761225?topnav=1&wvr=6&topsug=1)提出的宝贵建议
 
 **2018.05.01更新**：完善README，新增各组件对应SQL语句，方便无SQL基础的同学配置
 
@@ -195,4 +196,4 @@
 
 ### 广告位
 
-如果你觉得这些代码能帮上点忙，欢迎[点击链接](https://mourl.cc/GibLSK)支持一下我们番茄鱼，有你陪伴，梦想并不孤单。
+如果你觉得这些代码能帮上点忙，欢迎[点击链接](https://zhongchou.modian.com/item/16464.html)支持一下我们番茄鱼，有你陪伴，梦想并不孤单。
